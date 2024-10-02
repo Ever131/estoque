@@ -1,0 +1,57 @@
+CREATE DATABASE supermercado;
+USE supermercado;
+
+CREATE TABLE fornecedor (
+    cod_fornecedor INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    contato VARCHAR(50),
+    endereco VARCHAR(200)
+);
+
+CREATE TABLE produto (
+    cod_produto INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco_venda DECIMAL(10,2),
+    estoque INT
+);
+
+CREATE TABLE cliente (
+    cod_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    endereco VARCHAR(200)
+);
+
+CREATE TABLE pedido_compra (
+    num_pedido INT PRIMARY KEY AUTO_INCREMENT,
+    data_pedido DATE,
+    cod_fornecedor INT,
+    FOREIGN KEY (cod_fornecedor) REFERENCES fornecedor(cod_fornecedor)
+);
+
+CREATE TABLE pedido_venda (
+    num_pedido INT PRIMARY KEY AUTO_INCREMENT,
+    data_pedido DATE,
+    cod_cliente INT,
+    FOREIGN KEY (cod_cliente) REFERENCES cliente(cod_cliente)
+);
+
+CREATE TABLE item_pedido_compra (
+    num_pedido INT,
+    cod_produto INT,
+    quantidade INT,
+    preco_unitario DECIMAL(10,2),
+    PRIMARY KEY (num_pedido, cod_produto),
+    FOREIGN KEY (num_pedido) REFERENCES pedido_compra(num_pedido),
+    FOREIGN KEY (cod_produto) REFERENCES produto(cod_produto)
+);
+
+CREATE TABLE item_pedido_venda (
+    num_pedido INT,
+    cod_produto INT,
+    quantidade INT,
+    preco_unitario DECIMAL(10,2),
+    PRIMARY KEY (num_pedido, cod_produto),
+    FOREIGN KEY (num_pedido) REFERENCES pedido_venda(num_pedido),
+    FOREIGN KEY (cod_produto) REFERENCES produto(cod_produto)
+);
